@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV en Vivo - Multi Formato</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    
+    <style>
+        /* Estilos Generales con las fuentes solicitadas */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #161b22;
+            border-bottom: 2px solid #30363d;
+        }
+
+        header h1 {
+            margin: 0;
+            color: #58a6ff;
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            color: #58a6ff;
+            margin-top: 0;
+            font-weight: 600;
+        }
+
+        .video-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 999px) {
+            .video-content {
+                grid-template-columns: 1.5fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .video-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Contenedor del Reproductor */
+        .main-video {
+            background: #161b22;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            min-height: 400px; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Área donde se inyecta el video o iframe */
+        #player-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* Aspect Ratio 16:9 */
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Ajuste para que el video/iframe ocupe todo el wrapper */
+        #player-wrapper video, 
+        #player-wrapper iframe,
+        #player-wrapper .plyr {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+            border: none;
+        }
+
+        .main-video .title {
+            font-family: 'Poppins', sans-serif;
+            color: #fff;
+            font-size: 23px;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            text-transform: capitalize;
+            font-weight: 600;
+        }
+        
+        /* NUEVO ESTILO PARA LA SINOPSIS */
+        .main-video .synopsis {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            color: #c9d1d9; /* Gris claro */
+            padding-bottom: 10px;
+            margin-top: -10px; /* Acercar al título */
+            line-height: 1.4;
+        }
+        /* FIN NUEVO ESTILO */
+
+        /* [ ... ESTILOS DE LISTA Y BOTONES ... ] */
+        .section-buttons {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            margin-top: 20px;
+            scrollbar-width: none;
+            padding-bottom: 10px;
+        }
+        .section-buttons::-webkit-scrollbar { display: none; }
+        .section-button {
+            background-color: #161b22;
+            padding: 15px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #58a6ff;
+            border: 2px solid transparent;
+            transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+            margin-right: 10px;
+            display: inline-block;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            user-select: none;
+        }
+        .section-button:hover {
+            background-color: #30363d;
+            border-color: #58a6ff;
+            transform: translateY(-5px);
+        }
+        .section-button.active {
+            border-color: #00a7ad;
+            background-color: #00a7ad;
+            color: #fff;
+            transform: translateY(0);
+        }
+        #channel-lists-container { width: 100%; }
+        .channel-list {
+            display: none;
+            background-color: #161b22;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.5s ease-in-out;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .channel-list::-webkit-scrollbar { width: 7px; }
+        .channel-list::-webkit-scrollbar-track { background: #0d1117; border-radius: 50px; }
+        .channel-list::-webkit-scrollbar-thumb { background: #58a6ff; border-radius: 50px; }
+        .channel-list ul { list-style-type: none; padding: 0; margin: 0; }
+        .channel-item {
+            background: #0d1117;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid rgba(0, 0, 0, .1);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s, color 0.3s;
+            user-select: none;
+        }
+        .channel-item:hover { background-color: #30363d; color: #58a6ff; }
+        .channel-item.active { background: #00a7ad; color: #fff; }
+        .channel-item.active .channel-name { color: #fff; }
+        .channel-item .channel-name {
+            color: #fff;
+            font-size: 17px;
+            font-family: 'Poppins', sans-serif;
+            text-transform: capitalize;
+            font-weight: 400;
+        }
+        .channel-item img {
+            width: 150px; 
+            max-height: 50px; 
+            height: auto; 
+            object-fit: contain; 
+            border-radius: 5px;
+            padding: 2px 0;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>Canales en Vivo</h1>
+        </header>
+
+        <div class="section-buttons">
+            <div class="section-button active" data-section="noticias" onclick="toggleChannelList('noticias', this)">Noticias</div>
+            <div class="section-button" data-section="infantil" onclick="toggleChannelList('infantil', this)">Infantil</div>
+            <div class="section-button" data-section="otros-embeds" onclick="toggleChannelList('otros-embeds', this)">Otros Embeds</div>
+        </div>
+        
+        <div class="video-content">
+            
+            <div class="main-video">
+                <div id="player-wrapper">
+                    <video id="video-plyr" class='js-player' controls muted autoplay></video>
+                </div>
+                <h3 class="title" id="video-title">Cargando Canal...</h3>
+                
+                <p class="synopsis" id="video-synopsis">Selecciona un canal para ver su descripción.</p>
+                </div>
+            
+            <div id="channel-lists-container">
+
+                <div id="noticias" class="channel-list" style="display: block;">
+                    <h2>Canales Noticias (M3U8 y Embeds)</h2>
+                    <ul>
+                        <li class="channel-item" 
+                            data-type="hls"
+                            data-url="https://g3.vxral-hor.transport.edge-access.net/a14/ngrp:cronicatv_video1-100044_all/Playlist.m3u8?sense=true" 
+                            data-poster="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrWXlALDZ1GH4lK5QPiglCp6h1ockN-eMVMDXn63PcXvEjzcijPbx-MT5zsqjh280HIIyrnCzIIKCjuj6zYpwmY4FZiBI1vkCU0oSBWyrWIt4qD7_Ck0yEFMEIRQEs4z2pBSHTjg_DtD3o-TQUN2-3xQv-VAs8_r6yHoEtQLFTH-GQ46QAFFSjUcYV12wm/s320/Efecto-de-tv-sin-se%C3%B1al.-Pantalla-verde..gif" 
+                            data-name="Crónica TV"
+                            data-synopsis="Canal argentino de noticias y actualidad con un enfoque popular, conocido por su cobertura en vivo y titulares dramáticos."
+                            onclick="changeChannel(this)">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Cr%C3%B3nica_TV_logotipo_%282016%29.png" alt="Logo Cronica TV">
+                            <span class="channel-name">Crónica TV</span>
+                        </li>
+                        
+                        <li class="channel-item" 
+                            data-type="embed"
+                            data-url="https://api.vodgc.net/player/v2/embed/playerId/HKA9Y71614802794/contentId/1363280" 
+                            data-poster="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrWXlALDZ1GH4lK5QPiglCp6h1ockN-eMVMDXn63PcXvEjzcijPbx-MT5zsqjh280HIIyrnCzIIKCjuj6zYpwmY4FZiBI1vkCU0oSBWyrWIt4qD7_Ck0yEFMEIRQEs4z2pBSHTjg_DtD3o-TQUN2-3xQv-VAs8_r6yHoEtQLFTH-GQ46QAFFSjUcYV12wm/s320/Efecto-de-tv-sin-se%C3%B1al.-Pantalla-verde..gif"
+                            data-name="TN (Todo Noticias) - Vivo"
+                            data-synopsis="Uno de los canales de noticias más influyentes de Argentina, perteneciente al Grupo Clarín, con cobertura nacional e internacional 24 horas."
+                            onclick="changeChannel(this)">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/TN_todo_noticias_logo.svg/2560px-TN_todo_noticias_logo.svg.png" alt="Poster TN">
+                            <span class="channel-name">TN (Todo Noticias) - Vivo</span>
+                        </li>
+                        
+                        <li class="channel-item" 
+                            data-type="hls"
+                            data-url="https://stream-gtlc.telecentro.net.ar/hls/canal26hls/main.m3u8" 
+                            data-poster="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrWXlALDZ1GH4lK5QPiglCp6h1ockN-eMVMDXn63PcXvEjzcijPbx-MT5zsqjh280HIIyrnCzIIKCjuj6zYpwmY4FZiBI1vkCU0oSBWyrWIt4qD7_Ck0yEFMEIRQEs4z2pBSHTjg_DtD3o-TQUN2-3xQv-VAs8_r6yHoEtQLFTH-GQ46QAFFSjUcYV12wm/s320/Efecto-de-tv-sin-se%C3%B1al.-Pantalla-verde..gif" 
+                            data-name="Canal 26"
+                            data-synopsis="Canal de televisión abierta argentino dedicado a la información general y análisis político, propiedad de Telecentro."
+                            onclick="changeChannel(this)">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Canal_26_logo_%282022%29.svg/1024px-Canal_26_logo_%282022%29.svg.png" alt="Poster Canal 26">
+                            <span class="channel-name">Canal 26</span>
+                        </li>
+
+                        <li class="channel-item" 
+                            data-type="embed"
+                            data-url="https://player.twitch.tv/?channel=argentina_12tw&parent=twitch.tv" 
+                            data-poster="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Argentina12_2025.svg/2560px-Argentina12_2025.svg.png" 
+                            data-name="Argentina 12 - Vivo (Twitch)"
+                            data-synopsis="Cobertura en vivo de noticias, política y eventos de interés general en Argentina, transmitido a través de la plataforma Twitch."
+                            onclick="changeChannel(this)">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Argentina12_2025.svg/2560px-Argentina12_2025.svg.png" alt="Logo Argentina 12">
+                            <span class="channel-name">Argentina 12 - Vivo (Twitch)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="infantil" class="channel-list">
+                    <h2>Canales Infantil (HLS)</h2>
+                    <ul>
+                        <li class="channel-item" 
+                            data-type="hls"
+                            data-url="https://content.jwplatform.com/manifests/vM7nH0Kl.m3u8" 
+                            data-poster="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrWXlALDZ1GH4lK5QPiglCp6h1ockN-eMVMDXn63PcXvEjzcijPbx-MT5zsqjh280HIIyrnCzIIKCjuj6zYpwmY4FZiBI1vkCU0oSBWyrWIt4qD7_Ck0yEFMEIRQEs4z2pBSHTjg_DtD3o-TQUN2-3xQv-VAs8_r6yHoEtQLFTH-GQ46QAFFSjUcYV12wm/s320/Efecto-de-tv-sin-se%C3%B1al.-Pantalla-verde..gif" 
+                            data-name="Canal Infantil (Prueba NASA)"
+                            data-synopsis="Un canal de prueba que reproduce contenido de archivo de la NASA. Útil para verificar el funcionamiento de HLS."
+                            onclick="changeChannel(this)">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrWXlALDZ1GH4lK5QPiglCp6h1ockN-eMVMDXn63PcXvEjzcijPbx-MT5zsqjh280HIIyrnCzIIKCjuj6zYpwmY4FZiBI1vkCU0oSBWyrWIt4qD7_Ck0yEFMEIRQEs4z2pBSHTjg_DtD3o-TQUN2-3xQv-VAs8_r6yHoEtQLFTH-GQ46QAFFSjUcYV12wm/s320/Efecto-de-tv-sin-se%C3%B1al.-Pantalla-verde..gif" alt="Poster">
+                            <span class="channel-name">Canal Infantil (Prueba NASA)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="otros-embeds" class="channel-list">
+                    <h2>Otros Embeds (Kick, Dailymotion, etc.)</h2>
+                    <ul>
+                        <li class="channel-item" 
+                            data-type="embed"
+                            data-url="https://player.kick.com/westcol" 
+                            data-poster="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrWXlALDZ1GH4lK5QPiglCp6h1ockN-eMVMDXn63PcXvEjzcijPbx-MT5zsqjh280HIIyrnCzIIKCjuj6zYpwmY4FZiBI1vkCU0oSBWyrWIt4qD7_Ck0yEFMEIRQEs4z2pBSHTjg_DtD3o-TQUN2-3xQv-VAs8_r6yHoEtQLFTH-GQ46QAFFSjUcYV12wm/s320/Efecto-de-tv-sin-se%C3%B1al.-Pantalla-verde..gif" 
+                            data-name="Westcol (Kick)"
+                            data-synopsis="Stream del conocido creador de contenido Westcol en la plataforma Kick. Para fines de demostración de embeds."
+                            onclick="changeChannel(this)">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrWXlALDZ1GH4lK5QPiglCp6h1ockN-eMVMDXn63PcXvEjzcijPbx-MT5zsqjh280HIIyrnCzIIKCjuj6zYpwmY4FZiBI1vkCU0oSBWyrWIt4qD7_Ck0yEFMEIRQEs4z2pBSHTjg_DtD3o-TQUN2-3xQv-VAs8_r6yHoEtQLFTH-GQ46QAFFSjUcYV12wm/s320/Efecto-de-tv-sin-se%C3%B1al.-Pantalla-verde..gif" alt="Poster">
+                            <span class="channel-name">Westcol (Kick)</span>
+                        </li>
+
+                        <li class="channel-item" 
+                            data-type="embed"
+                            data-url="https://www.dailymotion.com/embed/video/x8q76y4?autoplay=1" 
+                            data-poster="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrWXlALDZ1GH4lK5QPiglCp6h1ockN-eMVMDXn63PcXvEjzcijPbx-MT5zsqjh280HIIyrnCzIIKCjuj6zYpwmY4FZiBI1vkCU0oSBWyrWIt4qD7_Ck0yEFMEIRQEs4z2pBSHTjg_DtD3o-TQUN2-3xQv-VAs8_r6yHoEtQLFTH-GQ46QAFFSjUcYV12wm/s320/Efecto-de-tv-sin-se%C3%B1al.-Pantalla-verde..gif" 
+                            data-name="Dailymotion Live"
+                            data-synopsis="Contenido en vivo de Dailymotion. Demostración de la compatibilidad con diferentes plataformas de video."
+                            onclick="changeChannel(this)">
+                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrWXlALDZ1GH4lK5QPiglCp6h1ockN-eMVMDXn63PcXvEjzcijPbx-MT5zsqjh280HIIyrnCzIIKCjuj6zYpwmY4FZiBI1vkCU0oSBWyrWIt4qD7_Ck0yEFMEIRQEs4z2pBSHTjg_DtD3o-TQUN2-3xQv-VAs8_r6yHoEtQLFTH-GQ46QAFFSjUcYV12wm/s320/Efecto-de-tv-sin-se%C3%B1al.-Pantalla-verde..gif" alt="Poster">
+                            <span class="channel-name">Dailymotion Live</span>
+                        </li>
+                    </ul>
+                </div>
+                
+            </div>
+            
+        </div>
+
+    </div>
+
+  <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+
+    <script>
+        // Referencia al contenedor
+        const wrapper = document.getElementById('player-wrapper');
+        const titleElement = document.getElementById('video-title');
+        const synopsisElement = document.getElementById('video-synopsis'); // Referencia a la sinopsis
+        let player = null; // Instancia de Plyr
+        let hls = null;    // Instancia de HLS
+
+        /**
+         * Función principal para configurar el reproductor según el tipo (HLS o Embed)
+         */
+        function setupPlayer(videoUrl, videoPoster, videoTitle, videoSynopsis, type) {
+            
+            // 1. Actualizar título y sinopsis
+            titleElement.textContent = videoTitle;
+            synopsisElement.textContent = videoSynopsis;
+
+            // 2. Limpiar todo lo anterior
+            if (hls) {
+                hls.destroy();
+                hls = null;
+            }
+            if (player) {
+                player.destroy();
+                player = null;
+            }
+            // Limpiar el contenido HTML del wrapper (quita videos o iframes viejos)
+            wrapper.innerHTML = '';
+
+            // --- MODO: EMBED (IFRAME) ---
+            if (type === 'embed') {
+                console.log("Cargando modo Embed: " + videoUrl);
+                const iframe = document.createElement('iframe');
+                iframe.src = videoUrl;
+                iframe.setAttribute('frameborder', '0');
+                iframe.setAttribute('allowfullscreen', 'true');
+                iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                
+                wrapper.appendChild(iframe);
+            } 
+            
+            // --- MODO: HLS (M3U8) ---
+            else {
+                console.log("Cargando modo HLS: " + videoUrl);
+                const video = document.createElement('video');
+                video.id = 'video-plyr';
+                video.controls = true;
+                video.autoplay = true;
+                video.muted = true;
+                video.style.width = '100%';
+                video.style.height = '100%';
+                if (videoPoster) video.poster = videoPoster;
+
+                wrapper.appendChild(video);
+
+                if (Hls.isSupported()) {
+                    hls = new Hls();
+                    hls.loadSource(videoUrl);
+                    hls.attachMedia(video);
+                    
+                    hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                        video.play().catch(e => console.log("Autoplay bloqueado:", e));
+                    });
+                    
+                    player = new Plyr(video, {
+                        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+                        autoplay: true
+                    });
+                } 
+                else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = videoUrl;
+                    player = new Plyr(video, {
+                        controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
+                        autoplay: true
+                    });
+                    video.play();
+                }
+            }
+        }
+
+        // Click en canal
+        function changeChannel(channelItem) {
+            const url = channelItem.getAttribute('data-url');
+            const poster = channelItem.getAttribute('data-poster');
+            const name = channelItem.getAttribute('data-name');
+            const synopsis = channelItem.getAttribute('data-synopsis') || 'Sin descripción disponible.';
+            const type = channelItem.getAttribute('data-type') || 'hls'; 
+            
+            // Estilos activos
+            const currentList = channelItem.closest('.channel-list');
+            if (currentList) {
+                currentList.querySelectorAll('.channel-item').forEach(item => item.classList.remove('active'));
+            }
+            channelItem.classList.add('active');
+
+            // Pasar la sinopsis a setupPlayer
+            setupPlayer(url, poster, name, synopsis, type);
+        }
+
+        // Cambio de sección
+        function toggleChannelList(sectionId, button) {
+            // Desactivar todos los botones
+            document.querySelectorAll('.section-button').forEach(btn => btn.classList.remove('active'));
+            // Ocultar todas las listas
+            document.querySelectorAll('.channel-list').forEach(list => list.style.display = 'none');
+
+            var selectedList = document.getElementById(sectionId);
+            if (selectedList) {
+                selectedList.style.display = 'block';
+                button.classList.add('active');
+            }
+            
+            // Cargar el primer canal de la nueva sección
+            let firstChannel = selectedList.querySelector('.channel-item');
+            if (firstChannel) changeChannel(firstChannel);
+        }
+
+        // Inicialización al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialSectionButton = document.querySelector('.section-button[data-section="noticias"]');
+            if (initialSectionButton) {
+                 var list = document.getElementById('noticias');
+                 list.style.display = 'block';
+                 initialSectionButton.classList.add('active');
+                 
+                 // Cargar el primer canal de NOTICIAS
+                 let firstChannel = list.querySelector('.channel-item');
+                 if(firstChannel) changeChannel(firstChannel);
+            }
+        });
+    </script>
