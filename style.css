@@ -1,0 +1,186 @@
+/* --- ESTILOS COMPARTIDOS (Base de styles.css) --- */
+        
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --color-primary: #34495e; /* Gris Azulado Oscuro (Base GAC) */
+    --color-accent: #007bff; /* Azul Moderno */
+    --color-light: #f4f6f9; /* Fondo muy claro */
+    --color-text: #333333; /* Texto principal */
+    --channel-color: #34495e; /* Color principal (será sobrescrito) */
+    --highlight-color: #ffc107; /* Amarillo para destacar el programa actual */
+}
+
+/* TIPOGRAFÍA: MONTSERRAT LIGHT y POPPINS BOLD */
+h1, h2, h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+body, p, a, nav, td, th {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300; 
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--color-text);
+}
+
+/* LAYOUT GENERAL */
+body {
+    background-color: white;
+    min-height: 100vh;
+}
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-bottom: 50px;
+}
+
+/* HEADER */
+.main-header {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 15px 0;
+    margin-bottom: 20px;
+}
+.main-header h1 {
+    color: white;
+    font-size: 1.8em;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.main-header nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 700;
+    font-size: 0.9em;
+    transition: color 0.3s;
+    display: inline-block;
+}
+.main-header nav { text-align: center; }
+.main-header nav a:hover { color: var(--color-accent); }
+
+/* LIVE STREAM CONTAINER (para el iframe) */
+.live-stream-container {
+    position: relative;
+    width: 100%;
+    /* 16:9 aspect ratio */
+    padding-bottom: 56.25%; 
+    height: 0;
+    margin-bottom: 20px;
+}
+
+.live-stream-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* INFOGRAFÍA (Ficha técnica) */
+.infobox {
+    float: right; 
+    width: 100%;
+    max-width: 300px; 
+    padding: 15px; 
+    border: 1px solid #ddd; 
+    background-color: var(--color-light);
+    margin: 0 0 20px 20px;
+    border-radius: 6px;
+}
+.infobox h3 {
+    background-color: var(--channel-color); 
+    color: white;
+    padding: 10px;
+    margin: -15px -15px 15px -15px;
+    border-radius: 6px 6px 0 0;
+    font-size: 1.1em;
+}
+.infobox p b {
+     font-weight: 700;
+     color: #555;
+}
+
+/* PROGRAMACIÓN (Tabla) */
+.program-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    margin-top: 30px;
+    font-size: 0.95em;
+}
+.program-table th {
+    padding: 10px;
+    background-color: var(--channel-color);
+    color: white;
+    font-weight: 700;
+}
+.program-table td {
+    padding: 8px 10px;
+    border: 1px solid #eee;
+}
+.program-table tr:nth-child(even) td {
+    background-color: var(--color-light);
+}
+
+/* Clase para destacar el programa actual */
+.now-playing {
+    background-color: var(--highlight-color) !important;
+    color: var(--color-text) !important;
+    font-weight: 700 !important;
+}
+
+/* TÍTULOS DE SECCIÓN */
+h1 {
+    font-size: 2.5em;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+h2 {
+    font-size: 1.8em;
+    border-bottom: 2px solid var(--channel-color);
+    padding-bottom: 5px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+h3 {
+    font-size: 1.4em;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+p {
+    margin-bottom: 15px;
+}
+
+/* FOOTER */
+.main-footer {
+    background-color: var(--color-primary);
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+.main-footer p {
+    color: white;
+    font-size: 0.8em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .infobox {
+        float: none;
+        max-width: 100%;
+        margin: 0 0 20px 0;
+    }
+}
+

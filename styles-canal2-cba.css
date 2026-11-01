@@ -1,0 +1,12 @@
+@import url('styles.css');
+:root {
+    /* Amarillo / Dorado - Central, Cívico, Universitario */
+    --color-primary: #F1C40F; 
+    --channel-color: #F1C40F; 
+    --color-accent: #e67e22; /* Naranja para acento */
+    --highlight-color: #333; 
+}
+.program-table thead th {
+    color: #333; /* Texto oscuro para header en fondo claro */
+}
+

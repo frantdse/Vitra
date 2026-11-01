@@ -1,0 +1,9 @@
+@import url('styles.css');
+:root {
+    /* Verde Petróleo / Esmeralda - Cuyo, Viñedos, Montaña */
+    --color-primary: #16a085; 
+    --channel-color: #16a085; 
+    --color-accent: #2c3e50;
+    --highlight-color: #f39c12; 
+}
+

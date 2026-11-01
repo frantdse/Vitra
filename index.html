@@ -3,116 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vitra Noticias | Autoridad y Proximidad</title>
-    <link rel="stylesheet" href="estilos.css">
+    <title>Grupo Austral Comunicaciones (GAC) - Canales</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> 
+    
+    <style>
+        /* Estilos específicos para la Home Page */
+        .channel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .channel-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+        .channel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        .channel-card h2 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: var(--color-primary); 
+        }
+        .channel-card p {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .channel-card a {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 700;
+            transition: background-color 0.3s;
+        }
+        .channel-card a:hover {
+            background-color: var(--color-accent);
+        }
+
+        /* Estilos de color específicos para las tarjetas */
+        .card-16 h2 { color: #34495e; } 
+        .card-16 a { background-color: #34495e; }
+        
+        .card-11-tuc h2 { color: #C0392B; } /* Tucumán (Terracota) */
+        .card-11-tuc a { background-color: #C0392B; }
+
+        .card-4-mza h2 { color: #16a085; } 
+        .card-4-mza a { background-color: #16a085; }
+        
+        .card-8-ba h2 { color: #E74C3C; } 
+        .card-8-ba a { background-color: #E74C3C; }
+
+        .card-2-cba h2 { color: #F1C40F; } 
+        .card-2-cba a { background-color: #F1C40F; color: #333; }
+
+        .card-4-corrientes h2 { color: #3498DB; } 
+        .card-4-corrientes a { background-color: #3498DB; }
+        
+        /* NUEVOS CANALES SANTIAGO */
+        .card-3-sgo h2 { color: #E67E22; } /* Naranja */
+        .card-3-sgo a { background-color: #E67E22; }
+
+        .card-11-sgo h2 { color: #8E44AD; } /* Púrpura */
+        .card-11-sgo a { background-color: #8E44AD; }
+        
+    </style>
 </head>
 <body>
-
-    <header>
-        <nav class="navbar">
-            <a href="index.html" class="brand">
-                <h1>VITRA</h1>
-                <span class="marketing-tag">24/7 EN CONTENIDO</span>
-            </a>
-            
-            <button class="hamburger" aria-label="Toggle Menu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
-            
-            <ul class="nav-menu">
-                <li class="nav-item"><a href="index.html" class="nav-link">Inicio</a></li>
-                <li class="nav-item"><a href="programacion.html" class="nav-link">Grilla Completa</a></li>
-                <li class="nav-item"><a href="#" class="nav-link">Denuncias UGC</a></li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link btn-live">
-                        <span class="live-dot"></span> EN VIVO
-                    </a>
-                </li>
-            </ul>
-        </nav>
+    <header class="main-header">
+        <div class="container">
+            <h1>Grupo Austral Comunicaciones (GAC)</h1>
+            <nav>
+                <a href="#">Inicio</a>
+                <a href="#canales">Nuestros Canales</a>
+                <a href="#mision">Misión</a>
+            </nav>
+        </div>
     </header>
 
-    <div class="ticker-wrap">
-        <div class="ticker">
-            Cargando noticias urgentes...
-        </div>
-    </div>
-
-    <div class="container">
+    <main class="container">
         
-        <div class="news-container">
+        <h2 id="mision">Misión y Cobertura</h2>
+        <p>El Grupo Austral Comunicaciones (GAC) es un conglomerado de medios ficticio dedicado a brindar información local de calidad, entretenimiento y cultura en diversas regiones de Argentina. Nos enfocamos en la producción local para reflejar la identidad de cada provincia y complementar la oferta con alianzas estratégicas de cobertura nacional e internacional.</p>
+        
+        <h2 id="canales">Nuestros Canales Regionales</h2>
+
+        <div class="channel-grid">
+
+            <div class="channel-card card-8-ba">
+                <h2>Canal 8 Buenos Aires</h2>
+                <p>El canal insignia y nacional. Cobertura total de la Ciudad Autónoma y GBA, con la programación de entretenimiento y noticias más vista del país.</p>
+                <a href="canal-8-ba.html">Ver Canal 8 BA</a>
+            </div>
+
+            <div class="channel-card card-2-cba">
+                <h2>Canal 2 Córdoba</h2>
+                <p>La señal de la Región Central. Fuerte compromiso con la cultura universitaria, el agro y el sector industrial de la provincia mediterránea.</p>
+                <a href="canal-2-cba.html">Ver Canal 2 CBA</a>
+            </div>
             
-            <main class="main-news-column">
-                
-                <h2 class="section-title">En Foco Hoy: Autoridad y la Calle</h2>
-                
-                <section id="featured-story">
-                    <p style="text-align: center; padding: 20px;">Cargando noticia destacada...</p>
-                </section>
-                
-                <h2 class="section-title">Últimas Noticias</h2>
+            <div class="channel-card card-11-sgo">
+                <h2>Canal 11 Santiago</h2>
+                <p>La voz de la Madre de Ciudades. Contenido local dedicado a la cultura, la política y la vida diaria del Noroeste Argentino.</p>
+                <a href="canal-11-sgo.html">Ver Canal 11 SGO</a>
+            </div>
 
-                <section id="rss-news-container" class="news-grid">
-                    <p style="grid-column: 1 / -1; text-align: center;">Cargando artículos...</p>
-                </section>
-
-            </main>
+            <div class="channel-card card-11-tuc">
+                <h2>Canal 11 Tucumán</h2>
+                <p>La Señal del NOA. Líder en información regional del Noroeste Argentino, con una gran variedad de programas culturales y deportivos. </p>
+                <a href="canal-11.html">Ver Canal 11 TUC</a>
+            </div>
             
-            <aside class="news-sidebar">
-                
-                <div class="widget">
-                    <h3>Programas Destacados</h3>
-                    
-                    <a href="vitra-barrio.html" class="program-card">
-                        <div class="program-card-img">
-                            <img src="https://subir-imagen.com/images/2025/12/09/1000010829.png" alt="Logo de Vitra en tu Barrio">
-                        </div>
-                        <div class="program-card-content">
-                            <h4>🔥 VITRA EN TU BARRIO</h4>
-                            <p>El programa que lleva el debate y la voz de la gente a cada rincón de la ciudad. Sabados 20hs y Domingos 19hs</p>
-                        </div>
-                    </a>
+            <div class="channel-card card-3-sgo">
+                <h2>Canal 3 Santiago</h2>
+                <p>Alternativa joven y fresca de Santiago. Enfoque en entretenimiento, música y conexión con la juventud de la región.</p>
+                <a href="canal-3-sgo.html">Ver Canal 3 SGO</a>
+            </div>
 
-                    <a href="vitra-viral.html" class="program-card">
-                        <div class="program-card-img">
-                            <img src="https://subir-imagen.com/images/2025/12/09/1000010826.png" alt="Logo de Vitra Viral">
-                        </div>
-                        <div class="program-card-content">
-                            <h4>VITRA VIRAL</h4>
-                            <p>La actualidad del entretenimiento, las redes y las tendencias que mueven al mundo. Sabdos 22hs y Domingos 21hs.</p>
-                        </div>
-                    </a>
-                    
-                    <a href="economia-a-fondo.html" class="program-card">
-                     <div class="program-card-img">
-                            <img src="https://subir-imagen.com/images/2025/12/09/1000010825.png" alt="Logo de Economia a Fondo">
-                        </div>
-                         <div class="program-card-content">
-                               <h4>ECONOMÍA A FONDO</h4>
-                      <p>Análisis detallado de la marectos, finanzas y provecionicas. Domingo 13:30h.</p>
-                   </div>
-                  </a>
-                    
-                </div>
-                
-                <div class="widget">
-                    <h3>Publicidad</h3>
-                    <div style="background-color: #ccc; height: 250px; display: flex; align-items: center; justify-content: center; color: var(--vitra-text); font-weight: 600; font-size: 1em; border-radius: 4px;">
-                        ANUNCIO 300x250
-                    </div>
-                </div>
+            <div class="channel-card card-4-corrientes">
+                <h2>Canal 4 Corrientes</h2>
+                <p>El Corazón del NEA. Enfocado en la tradición chamamecera, los carnavales y la economía del litoral argentino.</p>
+                <a href="canal-4-corrientes.html">Ver Canal 4 CTES</a>
+            </div>
 
-            </aside>
+            <div class="channel-card card-4-mza">
+                <h2>Canal 4 Mendoza</h2>
+                <p>El Canal de Cuyo. Cobertura completa de la vida mendocina, desde la vendimia hasta los deportes de montaña.</p>
+                <a href="canal-4.html">Ver Canal 4 MZA</a>
+            </div>
+            
+            <div class="channel-card card-16">
+                <h2>Canal 16 Ushuaia</h2>
+                <p>La señal del Fin del Mundo. Fuerte enfoque en noticias, turismo antártico y contenidos de debate local.</p>
+                <a href="canal-16.html">Ver Canal 16 USH</a>
+            </div>
 
         </div>
-    </div>
+        
+    </main>
 
-    <footer>
-        <p>&copy; 2025 Vitra Noticias. <strong>Liderando con Autoridad y Proximidad.</strong></p>
+    <footer class="main-footer">
+        <div class="container">
+            <p>© 2025 Grupo Austral Comunicaciones (GAC). Todos los derechos reservados.</p>
+        </div>
     </footer>
-
-    <script src="main.js"></script>
 </body>
 </html>

@@ -1,0 +1,9 @@
+@import url('styles.css');
+:root {
+    /* Rojo Fuerte - Insignia, Metropolitano, Nacional */
+    --color-primary: #E74C3C; 
+    --channel-color: #E74C3C; 
+    --color-accent: #34495e;
+    --highlight-color: #f1c40f; 
+}
+

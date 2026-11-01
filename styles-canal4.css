@@ -1,0 +1,32 @@
+@import url('styles.css');
+
+/* * Canal 4 Corrientes (Azul Cielo)
+ * Enfocado en el Litoral, Chamamé y Carnaval.
+ */
+:root {
+    /* Color principal: Azul Cielo / Azul Corrientes */
+    --color-primary: #3498DB; 
+    --channel-color: #3498DB; 
+    
+    /* Color de acento: Gris Oscuro (para contraste) */
+    --color-accent: #2c3e50; 
+    
+    /* Color de Resalte: Amarillo / Dorado (para los carnavales) */
+    --highlight-color: #f1c40f; 
+}
+
+/* * Estilos para garantizar que los elementos heredan los colores. 
+ * Estos estilos solo son necesarios si 'styles.css' no maneja bien las variables.
+ */
+.main-header {
+    background-color: var(--channel-color);
+}
+
+.infobox {
+    border-left: 5px solid var(--highlight-color);
+}
+
+.program-table thead th {
+    background-color: var(--channel-color);
+}
+

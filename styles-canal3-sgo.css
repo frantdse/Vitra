@@ -1,0 +1,8 @@
+
+@import url('styles.css');
+:root {
+    --color-primary: #E67E22; 
+    --channel-color: #E67E22; 
+    --color-accent: #2c3e50;
+    --highlight-color: #ffc107; 
+}
