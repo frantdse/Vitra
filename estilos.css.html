@@ -1,0 +1,91 @@
+/* Importación de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&family=Poppins:wght@400;600&display=swap');
+
+:root {
+    /* Colores Principales */
+    --vitra-blue: #0A2B4D; /* Azul Fuerte (Identidad) */
+    --vitra-red: #D30000;  /* Rojo Fuerte (Alerta/Live) */
+    --vitra-light: #F8F8F8; /* Fondo Base */
+    --vitra-text: #333333;
+    
+    /* Tipografías */
+    --font-headline: 'Montserrat', sans-serif;
+    --font-body: 'Poppins', sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--vitra-text);
+    background-color: var(--vitra-light);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background-color: var(--vitra-blue);
+    color: white;
+    padding: 20px 5%;
+    text-align: center;
+}
+
+header h1 {
+    font-family: var(--font-headline);
+    font-weight: 700;
+    margin: 0;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 600;
+}
+
+.main-content {
+    padding: 20px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h2 {
+    font-family: var(--font-headline);
+    font-weight: 300; /* Montserrat Light para subtítulos */
+    color: var(--vitra-blue);
+    border-bottom: 2px solid var(--vitra-red);
+    padding-bottom: 10px;
+}
+
+.live-tag {
+    background-color: var(--vitra-red);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+/* Estilos de Tabla para la Programación */
+.program-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.program-table th, .program-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.program-table th {
+    background-color: var(--vitra-blue);
+    color: white;
+    font-family: var(--font-body);
+    font-weight: 600;
+}
+
+.program-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

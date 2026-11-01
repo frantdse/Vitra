@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📢 Denuncias Ciudadanas (UGC) | VITRA Noticias</title>
+    
+    <link rel="stylesheet" href="estilos.css"> 
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="brand">
+                <h1>VITRA</h1>
+                <span class="marketing-tag">24/7 EN CONTENIDO</span>
+            </a>
+            
+            <button class="hamburger" aria-label="Toggle Menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Inicio</a></li>
+                <li class="nav-item"><a href="programacion.html" class="nav-link">Grilla Completa</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Denuncias UGC</a></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link btn-live">
+                        <span class="live-dot"></span> EN VIVO
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="denuncias-ugc" class="content-section">
+            <div class="container">
+                
+                <header class="denuncias-header">
+                    <h1 class="section-title">📢 Denuncias Ciudadanas (UGC)</h1>
+                    <p class="section-subtitle">Tu voz es fundamental. Utiliza este espacio para reportar eventos, irregularidades o noticias de interés comunitario en tu barrio. Nuestro equipo de VITRA verificará la información.</p>
+                </header>
+
+                <div class="denuncias-grid">
+                    
+                    <div class="denuncias-form-container">
+                        <h2>📝 Envía tu Reporte Anónimo</h2>
+                        <p class="form-instruction">Sé lo más detallado posible. Puedes adjuntar fotos o videos (máximo 5MB por archivo) si lo deseas.</p>
+
+                        <form id="denunciaForm">
+                            <div class="form-group">
+                                <label for="titulo">Título o Asunto *</label>
+                                <input type="text" id="titulo" name="titulo" required placeholder="Ej: Problema de alumbrado en Calle 4">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="ubicacion">Ubicación / Dirección *</label>
+                                <input type="text" id="ubicacion" name="ubicacion" required placeholder="Ej: Av. Principal 1234, Barrio Norte">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="descripcion">Descripción Detallada *</label>
+                                <textarea id="descripcion" name="descripcion" rows="6" required placeholder="Describe la situación, cuándo ocurrió y si hay personas afectadas."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="archivos">Archivos Multimedia (Fotos/Videos)</label>
+                                <input type="file" id="archivos" name="archivos" accept="image/*,video/*" multiple>
+                                <small>Formatos aceptados: JPG, PNG, MP4. Máximo 2 archivos.</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contacto">Email o Teléfono de Contacto (Opcional)</label>
+                                <input type="text" id="contacto" name="contacto" placeholder="Solo para seguimiento, no será publicado.">
+                            </div>
+                            
+                            <button type="submit" class="btn-submit">Enviar Denuncia</button>
+                            <p id="formMessage" class="form-message"></p>
+                        </form>
+                    </div>
+
+                    <div class="denuncias-info-container">
+                        <h2>📜 Política de Moderación y Verificación</h2>
+                        
+                        <p>Para asegurar la integridad de la información publicada, VITRA sigue un riguroso proceso de verificación:</p>
+                        
+                        <ul class="policy-list">
+                            <li>**Anonimato Garantizado:** Toda denuncia se recibe de forma anónima, a menos que el usuario opte por dejar un contacto.</li>
+                            <li>**Verificación Dual:** La información es cotejada con al menos dos fuentes o verificada in situ por nuestro equipo.</li>
+                            <li>**Publicación Responsable:** Solo se publicarán los reportes que puedan ser verificados y que sean de interés público.</li>
+                            <li>**Límites:** No se aceptan denuncias que promuevan el odio, contengan difamación personal o sean spam.</li>
+                        </ul>
+
+                        <a href="#contacto-vitra" class="btn-secondary">Contacto Directo con VITRA</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        
+        </main>
+
+    <script src="main.js"></script> 
+</body>
+</html>

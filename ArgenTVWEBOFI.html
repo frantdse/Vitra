@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📺 TV Argentina en Vivo</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* CSS para el Diseño */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #1e3c72; /* Azul oscuro */
+            color: white;
+            padding: 25px 0;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+        header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300; /* Light */
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+        .channel-selector {
+            text-align: center;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .channel-selector button {
+            /* Diseño de Botón */
+            background-color: #ff5722; /* Naranja/Rojo vibrante */
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px; /* Borde redondeado */
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600; /* Semibold */
+            font-size: 1.1em;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .channel-selector button:hover {
+            background-color: #e64a19;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+        .channel-selector button.active {
+            background-color: #1e3c72; /* Color activo: Azul de la cabecera */
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.5);
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            /* Relación de aspecto 16:9 (altura 56.25% del ancho) */
+            padding-bottom: 56.25%; 
+            height: 0;
+            overflow: hidden;
+            background-color: #000;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            margin: 0 auto; /* Centrar */
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Canales de Noticias Argentinos en Vivo</h1>
+    </header>
+
+    <div class="container">
+        
+        <div class="channel-selector" id="channelButtons">
+            </div>
+
+        <div class="video-container">
+            <iframe id="videoPlayer" 
+                    src="" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+            </iframe>
+        </div>
+        
+    </div>
+
+    <script>
+        // Objeto JavaScript para almacenar los canales y sus URLs de streaming (Embed)
+        const CHANNELS = [
+            // El canal 26 usa el reproductor externo que proporcionaste
+            { 
+                id: 'canal26', 
+                name: 'Canal 26', 
+                embedUrl: 'https://anym3u8player.com/tv/p.php?url=https%3A%2F%2Fstream-gtlc.telecentro.net.ar%2Fhls%2Fcanal26hls%2Fmain.m3u8' 
+            },
+            // Otros canales de noticias usando embeds de YouTube (más estables)
+            { id: 'tn', name: 'TN', embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCuGj02t1W-ZHTfxiw1J_TWA&autoplay=1' },
+            { id: 'c5n', name: 'C5N', embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCFv9NODzqelAYL4M4cM5bDA&autoplay=1' },
+            { id: 'ln', name: 'La Nación+', embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UC85C1yklC6J_JcZqGzH_oRw&autoplay=1' },
+            { id: 'a24', name: 'A24', embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCiT7gU89sB_Rmyh8xGvM-6Q&autoplay=1' },
+            { id: 'tvpublica', name: 'TV Pública', embedUrl: 'https://www.youtube.com/embed/live_stream?channel=UCQ20iRj5f-l4XjD4xKq6Eag&autoplay=1' },
+        ];
+
+        const videoPlayer = document.getElementById('videoPlayer');
+        const channelButtonsContainer = document.getElementById('channelButtons');
+
+        /**
+         * Inicializa la página, carga el primer canal y crea los botones.
+         */
+        function initializePage() {
+            createChannelButtons();
+            // Cargar el Canal 26 por defecto
+            loadChannel(CHANNELS[0].id);
+        }
+
+        /**
+         * Crea los botones para cada canal.
+         */
+        function createChannelButtons() {
+            CHANNELS.forEach(channel => {
+                const button = document.createElement('button');
+                button.textContent = channel.name;
+                button.setAttribute('data-channel-id', channel.id);
+                button.onclick = () => loadChannel(channel.id);
+                channelButtonsContainer.appendChild(button);
+            });
+        }
+
+        /**
+         * Carga el stream del canal seleccionado en el iframe.
+         * @param {string} channelId - El ID del canal a cargar.
+         */
+        function loadChannel(channelId) {
+            const selectedChannel = CHANNELS.find(c => c.id === channelId);
+
+            if (selectedChannel) {
+                // 1. Actualiza el iframe con la URL de embed
+                // Se agrega '&autoplay=1' para intentar que el video inicie automáticamente.
+                const embedSrc = selectedChannel.embedUrl.includes('?') 
+                                 ? `${selectedChannel.embedUrl}&autoplay=1` 
+                                 : `${selectedChannel.embedUrl}?autoplay=1`;
+                videoPlayer.src = embedSrc;
+                
+                // 2. Actualiza la clase 'active' para el botón presionado
+                document.querySelectorAll('.channel-selector button').forEach(button => {
+                    if (button.getAttribute('data-channel-id') === channelId) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+            } else {
+                console.error(`Canal con ID ${channelId} no encontrado.`);
+            }
+        }
+
+        // Ejecutar la función de inicialización cuando el DOM esté cargado
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
