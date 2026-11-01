@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuentas de Streaming GRATIS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #7B3F00;
+            --secondary-color: #FFA500;
+            --background-light: #F8F8F8;
+            --text-dark: #333;
+            --text-light: #fff;
+            --card-bg: #fff;
+            --border-color: #e0e0e0;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-light);
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px var(--shadow-light);
+            margin-bottom: 30px;
+        }
+
+        .header-content h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header-content p {
+            font-size: 1.2em;
+            font-weight: 400;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto 30px auto;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2em;
+            font-weight: 600;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 6px 15px var(--shadow-light);
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        #accounts-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .account-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .account-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: var(--secondary-color);
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .account-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--shadow-light);
+        }
+
+        .streaming-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+        .streaming-logo {
+            width: 80px;
+            height: 80px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            border: 2px solid var(--secondary-color);
+            overflow: hidden;
+        }
+
+
+        .account-card h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        .account-card p {
+            margin: 5px 0;
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 15px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+
+        .btn-primary:hover {
+            background-color: #6a3500;
+            transform: translateY(-2px);
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        input[type="text"], input[type="password"] {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1em;
+            color: var(--text-dark);
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        #access-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--background-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .access-card {
+            text-align: center;
+            padding: 40px;
+            max-width: 450px;
+        }
+
+        .access-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .access-card .message {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Cuentas de Streaming GRATIS</h1>
+            <p>¡Hola! Aquí tienes algunas cuentas de streaming totalmente gratuitas para disfrutar.</p>
+        </div>
+    </header>
+
+    <main>
+        <section id="accounts-section">
+            <h2>Nuestras Cuentas Disponibles</h2>
+            <div id="accounts-list">
+                </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cuentas de "streaming gratis" con la información proporcionada
+            let accounts = [
+                { name: 'Disney Plus', email: 'josemiguelkuju.12@gmail.com', password: 'Kaju4ñ115@', logoImg: 'https://files.catbox.moe/m65o9t.png' },
+                { name: 'Vix Premium', email: 'premium10@gmail.com.co', password: 'PremiumVix', logoImg: 'https://files.catbox.moe/03cagp.png' },
+                { name: 'Paramount Plus #1', email: 'yespankey@instaddr.uk', password: 'South123!!!', logoImg: 'https://files.catbox.moe/byp22f.png' },
+                { name: 'Paramount Plus #2', email: 'samanthahuxley12@hotmail.com', password: 'CaseyConner1', logoImg: 'https://files.catbox.moe/byp22f.png' },
+            ];
+
+            // Contraseña para acceder a la lista de cuentas
+            const accessPassword = '180314';
+
+            // Referencias a elementos del DOM
+            const accountsList = document.getElementById('accounts-list');
+
+            // --- Lógica para la pantalla de acceso inicial ---
+            const accessScreen = document.createElement('div');
+            accessScreen.id = 'access-screen';
+            accessScreen.innerHTML = `
+                <div class="card access-card">
+                    <h2>Acceso a las Cuentas</h2>
+                    <form id="access-form">
+                        <p>Introduce la contraseña para ver las cuentas de streaming gratuitas.</p>
+                        <div class="input-group">
+                            <label for="access-password-input">Contraseña:</label>
+                            <input type="password" id="access-password-input" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Acceder</button>
+                    </form>
+                    <p id="access-message" class="message"></p>
+                </div>
+            `;
+            document.body.appendChild(accessScreen);
+
+            const accessForm = document.getElementById('access-form');
+            const accessMessage = document.getElementById('access-message');
+
+            // Función para renderizar las cuentas en la página
+            const renderAccounts = () => {
+                accountsList.innerHTML = '';
+                accounts.forEach(account => {
+                    const accountCard = document.createElement('div');
+                    accountCard.classList.add('account-card');
+                    accountCard.innerHTML = `
+                        <div class="streaming-logo">
+                            <img src="${account.logoImg}" alt="${account.name} Logo">
+                        </div>
+                        <h3>${account.name}</h3>
+                        <p><strong>Correo:</strong> ${account.email}</p>
+                        <p><strong>Contraseña:</strong> <code>${account.password}</code></p>
+                    `;
+                    accountsList.appendChild(accountCard);
+                });
+            };
+
+            // Evento para el formulario de acceso
+            accessForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const enteredPassword = document.getElementById('access-password-input').value;
+
+                if (enteredPassword === accessPassword) {
+                    accessScreen.classList.add('hidden');
+                    renderAccounts();
+                } else {
+                    accessMessage.textContent = 'Contraseña incorrecta. Inténtalo de nuevo. 😥';
+                    accessMessage.style.color = '#d9534f';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
